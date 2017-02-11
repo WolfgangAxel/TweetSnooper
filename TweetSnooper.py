@@ -46,6 +46,7 @@ def makeCreds(myPath):
           "through obtaining all the credentials this bot needs in order "
           "to function.")
     config = configparser.ConfigParser()
+    config.optionxform = lambda option: option
     print("First, we will deal with Reddit.")
     input("Press enter to continue...\n==> ")
     ############################################################# Reddit
