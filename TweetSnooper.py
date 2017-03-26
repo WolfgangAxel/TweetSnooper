@@ -103,8 +103,8 @@ def makeCreds(myPath):
     mscCreds = {}
     for variable,question in [ ["mySub","Enter the name of your subreddit."],
                                ["botMaster","Enter your personal Reddit username. (This is used for Reddit's user-agent, nothing more)"],
-                               ["tweetLimit","How many tweets to keep in the sidebar?"]
-                               ["sleepTime","How many seconds to wait between refreshing? (Use whole numbers like 300 or expressions like 5 * 60)"],
+                               ["tweetLimit","How many tweets to keep in the sidebar?"],
+                               ["sleepTime","How many seconds to wait between refreshing? (Use whole numbers like 300 or expressions like 5 * 60)"]
                              ]:
         while True:
             value = input(question+"\n==>")
@@ -118,7 +118,7 @@ def makeCreds(myPath):
     while True:
         print("Current list of users:")
         for user in users:
-            print("  @"+user)
+            print("  "+user)
         name = input("Enter the twitter handle of a user you want in your sidebar:\n==> @")
         confirm = input("Add @"+name+"'s tweets to the sidebar? (y/n)\n==> ")
         if confirm.lower() == "y":
@@ -128,6 +128,7 @@ def makeCreds(myPath):
         again = input("Add another user? (y/n)\==> ")
         if again.lower() == "n":
             if users != []:
+                mscCreds["users"]=str(users)
                 break
             else:
                 print("No users found. Please add at least one user.")
