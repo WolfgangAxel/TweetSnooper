@@ -35,6 +35,8 @@ def loadCreds(myPath):
     config = configparser.RawConfigParser()
     config.optionxform = lambda option: option
     config.read(myPath+"credentials.ini")
+    if not config.sections():
+        raise Exception
     for item in config.sections():
         if not [thing[1] for thing in config[item].items()]:
             raise Exception
@@ -216,8 +218,8 @@ while True:
             print("preFeed failure. Assuming bottom attachment.")
             preFeed = sidebar+"\n\n****\n\n##Twitter Feed\n\n"
         try:
-            parsed = re.search("(.*)\n\n[*]*\n\n##Twitter Feed\n\n(.*)[*]*(.*)",sidebar,flags=re.DOTALL)
-            postFeed = "****"+parsed.group(3)
+            parsed = re.search(".*\n\n[*]*\n\n##Twitter Feed\n\n.*[*]*(.*)",sidebar,flags=re.DOTALL)
+            postFeed = "****"+parsed.group(1)
         except:
             print("postFeed failure")
             postFeed = "****"
