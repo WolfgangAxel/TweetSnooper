@@ -104,6 +104,7 @@ def makeCreds(myPath):
     for variable,question in [ ["mySub","Enter the name of your subreddit."],
                                ["botMaster","Enter your personal Reddit username. (This is used for Reddit's user-agent, nothing more)"],
                                ["tweetLimit","How many tweets to keep in the sidebar?"],
+                               ["retweets","Would you like retweets and replies to appear in the feed? (y/n)"],
                                ["sleepTime","How many seconds to wait between refreshing? (Use whole numbers like 300 or expressions like 5 * 60)"]
                              ]:
         while True:
@@ -152,6 +153,8 @@ def fakeTimeline(users):
     for user in users:
         tweets = T.user_timeline(user,count=tweetLimit)
         for tweet in tweets:
+            if retweets == "n" and (tweet.is_quote_status or tweet.in_reply_to_screen_name):
+                continue
             conglomeration.append( {"time":tweet.created_at.__str__(), 
                                     "author":tweet.author.name, 
                                     "handle":tweet.author.screen_name, 
@@ -193,6 +196,11 @@ for variable in creds["M"]:
 users = eval(users)
 tweetLimit = eval(tweetLimit)
 sleepTime = eval(sleepTime)
+if retweets.lower() not in ["y","n"]:
+    retweets = "n"
+    print("Error reading retweets variable. Defaulted to 'no'. Ensure "
+          "the `retweets` variable in your `credentials.ini` file is "
+          "set to either 'y' or 'n' to prevent this warning next time.")
 
 ## Twitter authentication
 auth = tweepy.OAuthHandler(creds["T"]["ck"],creds["T"]["cs"])
